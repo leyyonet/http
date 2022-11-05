@@ -1,157 +1,223 @@
-import {Application, IRoute, IRouterMatcher, RequestParamHandler} from "express";
 import * as http from "http";
-import {emptyFn} from "@leyyo/core";
+import {Application} from "express";
+import {ArraySome, Fqn, OneOrMore, RecLike} from "@leyyo/core";
+import {LY_INT_FQN} from "../internal";
+import {HttpApplication, HttpRoute} from "./types";
+import {AbstractEvent} from "../event";
 
-// noinspection JSUnusedGlobalSymbols
-export class MockApplication {
-    "m-search"(...a: Array<unknown>): this {return this;}
-    _router: any;
-    all(...a: Array<unknown>): this {return this;}
-    checkout(...a: Array<unknown>): this {return this;}
-    connect(...a: Array<unknown>): this {return this;}
-    copy(...a: Array<unknown>): this {return this;}
-    delete(...a: Array<unknown>): this {return this;}
-    get: ((name: string) => any) & IRouterMatcher<this>;
-    head(...a: Array<unknown>): this {return this;}
-    locals: Record<string, any>;
-    lock(...a: Array<unknown>): this {return this;}
-    map: any;
-    merge(...a: Array<unknown>): this {return this;}
-    mkactivity(...a: Array<unknown>): this {return this;}
-    mkcol(...a: Array<unknown>): this {return this;}
-    mountpath: string | string[];
-    move(...a: Array<unknown>): this {return this;}
-    notify(...a: Array<unknown>): this {return this;}
+// noinspection JSUnusedGlobalSymbols,JSUnusedLocalSymbols
+@Fqn(...LY_INT_FQN)
+export class MockApplication extends AbstractEvent<HttpApplication> implements HttpApplication {
 
-    on(event: string, callback: (parent: Application) => void): this {
-        return undefined;
+    // region statics
+    protected static _fake: HttpApplication;
+    static get fake(): HttpApplication {
+        if (!this._fake) {
+            this._fake = new MockApplication();
+            (this._fake as MockApplication)._$isFake = true;
+        }
+        return this._fake;
     }
-
-    options(...a: Array<unknown>): this {return this;}
-    patch(...a: Array<unknown>): this {return this;}
-    post(...a: Array<unknown>): this {return this;}
-    propfind(...a: Array<unknown>): this {return this;}
-    proppatch(...a: Array<unknown>): this {return this;}
-    purge(...a: Array<unknown>): this {return this;}
-    put(...a: Array<unknown>): this {return this;}
-    report(...a: Array<unknown>): this {return this;}
-    resource: any;
-    router: string;
-    routes: any;
-    search(...a: Array<unknown>): this {return this;}
-    settings: any;
-    stack: any[];
-    subscribe(...a: Array<unknown>): this {return this;}
-    trace(...a: Array<unknown>): this {return this;}
-    unlock(...a: Array<unknown>): this {return this;}
-    unsubscribe(...a: Array<unknown>): this {return this;}
-    use(...a: Array<unknown>): this {return this;}
-
-    addListener(eventName: string | symbol, listener: (...args: any[]) => void): this {
-        return undefined;
+    static clone(app: Application | HttpApplication): HttpApplication {
+        if (!app) {
+            return this.fake;
+        }
+        if (app instanceof MockApplication) {
+            return app;
+        }
+        const ins = new MockApplication();
+        ins.$setOrigin(app as HttpApplication);
+        return ins;
     }
+    // endregion statics
 
-    defaultConfiguration(): void {
-        emptyFn();
-    }
+    // region custom
+    // endregion custom
 
-    disable(setting: string): this {
-        return undefined;
-    }
+    // region properties
+    get _router(): unknown {return this.$get('_router');} // todo
+    set _router(value: unknown) {this.$set('_router', value);}
 
-    disabled(setting: string): boolean {
-        return false;
-    }
+    get locals(): RecLike {return this.$get<RecLike>('locals');}
+    set locals(value: RecLike) {this.$set('locals', value);}
 
-    emit(eventName: string | symbol, ...args: any[]): boolean {
-        return false;
-    }
+    get map(): unknown {return this.$get<unknown>('map');} // todo
+    set map(value: unknown) {this.$set('map', value);}
 
-    enable(setting: string): this {
-        return undefined;
-    }
+    get mountpath(): OneOrMore<string> {return this.$get<OneOrMore<string>>('mountpath');}
+    set mountpath(value: OneOrMore<string>) {this.$set('mountpath', value);}
 
-    enabled(setting: string): boolean {
-        return false;
-    }
+    get resource(): unknown {return this.$get<unknown>('resource');} // todo
+    set resource(value: unknown) {this.$set('resource', value);}
 
-    engine(ext: string, fn: (path: string, options: object, callback: (e: any, rendered?: string) => void) => void): this {
-        return undefined;
-    }
+    get router(): string {return this.$get<string>('router');}
+    set router(value: string) {this.$set('router', value);}
 
-    eventNames(): Array<string | symbol> {
-        return undefined;
-    }
+    get routes(): unknown {return this.$get<unknown>('routes');} // todo
+    set routes(value: unknown) {this.$set('routes', value);}
 
-    getMaxListeners(): number {
-        return 0;
-    }
+    get settings(): unknown {return this.$get<unknown>('settings');} // todo
+    set settings(value: unknown) {this.$set('settings', value);}
 
-    init(): void {
-        emptyFn();
-    }
+    get stack(): ArraySome {return this.$get<ArraySome>('stack');}
+    set stack(value: ArraySome) {this.$set('stack', value);}
+    // endregion properties
 
-    listen(port?: any, hostname?: string | (() => void), backlog?: number | (() => void), callback?: () => void): http.Server {
-        return undefined;
+    // region methods
+    "m-search"(...a): this {
+        this.$call('m-search', ...a);
+        return this;
     }
-
-    listenerCount(eventName: string | symbol): number {
-        return 0;
+    all(...a): this {
+        this.$call('all', ...a);
+        return this;
     }
-
-    listeners(eventName: string | symbol): Function[] {
-        return [];
+    checkout(...a): this {
+        this.$call('checkout', ...a);
+        return this;
     }
-
-    off(eventName: string | symbol, listener: (...args: any[]) => void): this {
-        return undefined;
+    connect(...a): this {
+        this.$call('connect', ...a);
+        return this;
     }
-
-    once(eventName: string | symbol, listener: (...args: any[]) => void): this {
-        return undefined;
+    copy(...a): this {
+        this.$call('copy', ...a);
+        return this;
     }
-
-    param(name: string | string[] | ((name: string, matcher: RegExp) => RequestParamHandler), handler?: RequestParamHandler): this {
-        return undefined;
+    delete(...a): this {
+        this.$call('delete', ...a);
+        return this;
     }
-
-    path(): string {
-        return "";
+    engine(...a): HttpApplication {
+        return this.$call<HttpApplication>('engine', ...a);
     }
-
-    prependListener(eventName: string | symbol, listener: (...args: any[]) => void): this {
-        return undefined;
+    get(...a): this {
+        this.$call('get', ...a);
+        return this;
     }
-
-    prependOnceListener(eventName: string | symbol, listener: (...args: any[]) => void): this {
-        return undefined;
+    head(...a): this {
+        this.$call('head', ...a);
+        return this;
     }
-
-    rawListeners(eventName: string | symbol): Function[] {
-        return [];
+    lock(...a): this {
+        this.$call('lock', ...a);
+        return this;
     }
-
-    removeAllListeners(event?: string | symbol): this {
-        return undefined;
+    merge(...a): this {
+        this.$call('merge', ...a);
+        return this;
     }
-
-    removeListener(eventName: string | symbol, listener: (...args: any[]) => void): this {
-        return undefined;
+    mkactivity(...a): this {
+        this.$call('mkactivity', ...a);
+        return this;
     }
-
-    render(name: string, options?: object | ((err: Error, html: string) => void), callback?: (err: Error, html: string) => void): void {
-        emptyFn();
+    mkcol(...a): this {
+        this.$call('mkcol', ...a);
+        return this;
     }
-
-    route(prefix): any {
-        emptyFn();
+    move(...a): this {
+        this.$call('move', ...a);
+        return this;
     }
-
-    set(setting: string, val: any): this {
-        return undefined;
+    notify(...a): this {
+        this.$call('notify', ...a);
+        return this;
     }
-
-    setMaxListeners(n: number): this {
-        return undefined;
+    options(...a): this {
+        this.$call('options', ...a);
+        return this;
     }
+    patch(...a): this {
+        this.$call('patch', ...a);
+        return this;
+    }
+    post(...a): this {
+        this.$call('post', ...a);
+        return this;
+    }
+    propfind(...a): this {
+        this.$call('propfind', ...a);
+        return this;
+    }
+    proppatch(...a): this {
+        this.$call('proppatch', ...a);
+        return this;
+    }
+    purge(...a): this {
+        this.$call('purge', ...a);
+        return this;
+    }
+    put(...a): this {
+        this.$call('put', ...a);
+        return this;
+    }
+    report(...a): this {
+        this.$call('report', ...a);
+        return this;
+    }
+    search(...a): this {
+        this.$call('search', ...a);
+        return this;
+    }
+    subscribe(...a): this {
+        this.$call('subscribe', ...a);
+        return this;
+    }
+    trace(...a): this {
+        this.$call('trace', ...a);
+        return this;
+    }
+    unlock(...a): this {
+        this.$call('unlock', ...a);
+        return this;
+    }
+    unsubscribe(...a): this {
+        this.$call('unsubscribe', ...a);
+        return this;
+    }
+    use(...a): this {
+        this.$call('use', ...a);
+        return this;
+    }
+    defaultConfiguration(...a): void {
+        this.$call('defaultConfiguration', ...a);
+    }
+    disable(...a): this {
+        this.$call('disable', ...a);
+        return this;
+    }
+    disabled(...a): boolean {
+        return this.$call<boolean>('disabled', ...a);
+    }
+    enable(...a): this {
+        this.$call('enable', ...a);
+        return this;
+    }
+    enabled(...a): boolean {
+        return this.$call<boolean>('enabled', ...a);
+    }
+    init(...a): void {
+        this.$call('init', ...a);
+    }
+    listen(...a): http.Server {
+        return this.$call<http.Server>('listen', ...a);
+    }
+    param(...a): this {
+        this.$call('param', ...a);
+        return this;
+    }
+    path(...a): string {
+        return this.$call<string>('path', ...a);
+    }
+    render(...a): void {
+        this.$call('render', ...a);
+    }
+    route(...a): HttpRoute {
+        return this.$call<HttpRoute>('route', ...a);
+    }
+    set(...a): this {
+        this.$call('set', ...a);
+        return this;
+    }
+    // endregion methods
 }
