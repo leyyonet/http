@@ -8,8 +8,7 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true,
-    "resolveJsonModule": true
+    "esModuleInterop": true
   },
   "include": [
     "src/**/*.ts"
@@ -17,8 +16,7 @@
   "exclude": [
     "node_modules",
     "dist",
-    "src/assets",
-    "src/_backup",
-    "src/**/*.spec.ts"
+    "src/**/*.spec.ts",
+    "test/**/*.spec.ts"
   ]
 }

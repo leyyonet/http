@@ -1,157 +1,251 @@
-import {Application, IRoute, IRouterMatcher, RequestParamHandler} from "express";
+import {Application, RequestParamHandler, Router} from "express";
 import * as http from "http";
-import {emptyFn} from "@leyyo/core";
+import {MockApplicationLike} from "./index.types";
+import {HttpEvent} from "../shared";
+import {$log, Logger} from "@leyyo/common";
+
+let _firstOrigin: Application;
 
 // noinspection JSUnusedGlobalSymbols
-export class MockApplication {
-    "m-search"(...a: Array<unknown>): this {return this;}
+export class MockApplication extends HttpEvent<Application> implements MockApplicationLike {
     _router: any;
-    all(...a: Array<unknown>): this {return this;}
-    checkout(...a: Array<unknown>): this {return this;}
-    connect(...a: Array<unknown>): this {return this;}
-    copy(...a: Array<unknown>): this {return this;}
-    delete(...a: Array<unknown>): this {return this;}
-    get: ((name: string) => any) & IRouterMatcher<this>;
-    head(...a: Array<unknown>): this {return this;}
     locals: Record<string, any>;
-    lock(...a: Array<unknown>): this {return this;}
     map: any;
-    merge(...a: Array<unknown>): this {return this;}
-    mkactivity(...a: Array<unknown>): this {return this;}
-    mkcol(...a: Array<unknown>): this {return this;}
     mountpath: string | string[];
-    move(...a: Array<unknown>): this {return this;}
-    notify(...a: Array<unknown>): this {return this;}
 
-    on(event: string, callback: (parent: Application) => void): this {
-        return undefined;
+    constructor(origin?: Application) {
+        super(origin);
+    }
+    // region methods
+    "m-search"(..._a: Array<unknown>): this {
+        logger.warn('Should not be called', {fn: 'm-search'});
+        return this;
     }
 
-    options(...a: Array<unknown>): this {return this;}
-    patch(...a: Array<unknown>): this {return this;}
-    post(...a: Array<unknown>): this {return this;}
-    propfind(...a: Array<unknown>): this {return this;}
-    proppatch(...a: Array<unknown>): this {return this;}
-    purge(...a: Array<unknown>): this {return this;}
-    put(...a: Array<unknown>): this {return this;}
-    report(...a: Array<unknown>): this {return this;}
+    options(..._a: Array<unknown>): this {
+        logger.warn('Should not be called', {fn: 'options'});
+        return this;
+    }
+
+    patch(..._a: Array<unknown>): this {
+        logger.warn('Should not be called', {fn: 'patch'});
+        return this;
+    }
+
+    post(..._a: Array<unknown>): this {
+        logger.warn('Should not be called', {fn: 'post'});
+        return this;
+    }
+
+    propfind(..._a: Array<unknown>): this {
+        logger.warn('Should not be called', {fn: 'propfind'});
+        return this;
+    }
+
+    proppatch(..._a: Array<unknown>): this {
+        logger.warn('Should not be called', {fn: 'proppatch'});
+        return this;
+    }
+
+    purge(..._a: Array<unknown>): this {
+        logger.warn('Should not be called', {fn: 'purge'});
+        return this;
+    }
+
+    put(..._a: Array<unknown>): this {
+        logger.warn('Should not be called', {fn: 'put'});
+        return this;
+    }
+
+    report(..._a: Array<unknown>): this {
+        logger.warn('Should not be called', {fn: 'report'});
+        return this;
+    }
+
+    link(..._a: Array<unknown>): this {
+        logger.warn('Should not be called', {fn: 'link'});
+        return this;
+    }
+
+    unlink(..._a: Array<unknown>): this {
+        logger.warn('Should not be called', {fn: 'unlink'});
+        return this;
+    }
+
+    all(..._a: Array<unknown>): this {
+        logger.warn('Should not be called', {fn: 'all'});
+        return this;
+    }
+
+    checkout(..._a: Array<unknown>): this {
+        logger.warn('Should not be called', {fn: 'checkout'});
+        return this;
+    }
+
+    connect(..._a: Array<unknown>): this {
+        logger.warn('Should not be called', {fn: 'connect'});
+        return this;
+    }
+
+    copy(..._a: Array<unknown>): this {
+        logger.warn('Should not be called', {fn: 'copy'});
+        return this;
+    }
+
+    delete(..._a: Array<unknown>): this {
+        logger.warn('Should not be called', {fn: 'delete'});
+        return this;
+    }
+
+    get(..._a: Array<unknown>): this {
+        logger.warn('Should not be called', {fn: 'get'});
+        return this;
+    }
+
+    head(..._a: Array<unknown>): this {
+        logger.warn('Should not be called', {fn: 'head'});
+        return this;
+    }
+
+    lock(..._a: Array<unknown>): this {
+        logger.warn('Should not be called', {fn: 'lock'});
+        return this;
+    }
+
+    merge(..._a: Array<unknown>): this {
+        logger.warn('Should not be called', {fn: 'merge'});
+        return this;
+    }
+
+    mkactivity(..._a: Array<unknown>): this {
+        logger.warn('Should not be called', {fn: 'mkactivity'});
+        return this;
+    }
+
+    mkcol(..._a: Array<unknown>): this {
+        logger.warn('Should not be called', {fn: 'mkcol'});
+        return this;
+    }
+
+    move(..._a: Array<unknown>): this {
+        logger.warn('Should not be called', {fn: 'move'});
+        return this;
+    }
+
+    notify(..._a: Array<unknown>): this {
+        logger.warn('Should not be called', {fn: 'notify'});
+        return this;
+    }
+
+    search(..._a: Array<unknown>): this {
+        logger.warn('Should not be called', {fn: 'search'});
+        return this;
+    }
+
+    subscribe(..._a: Array<unknown>): this {
+        logger.warn('Should not be called', {fn: 'subscribe'});
+        return this;
+    }
+
+    trace(..._a: Array<unknown>): this {
+        logger.warn('Should not be called', {fn: 'trace'});
+        return this;
+    }
+
+    unlock(..._a: Array<unknown>): this {
+        logger.warn('Should not be called', {fn: 'unlock'});
+        return this;
+    }
+
+    unsubscribe(..._a: Array<unknown>): this {
+        logger.warn('Should not be called', {fn: 'unsubscribe'});
+        return this;
+    }
+
+    use(..._a: Array<unknown>): this {
+        logger.warn('Should not be called', {fn: 'use'});
+        return this;
+    }
+
+    // endregion methods
+
     resource: any;
-    router: string;
+    router: Router;
     routes: any;
-    search(...a: Array<unknown>): this {return this;}
     settings: any;
     stack: any[];
-    subscribe(...a: Array<unknown>): this {return this;}
-    trace(...a: Array<unknown>): this {return this;}
-    unlock(...a: Array<unknown>): this {return this;}
-    unsubscribe(...a: Array<unknown>): this {return this;}
-    use(...a: Array<unknown>): this {return this;}
 
-    addListener(eventName: string | symbol, listener: (...args: any[]) => void): this {
-        return undefined;
+    // region static
+    // noinspection JSUnusedGlobalSymbols
+    static setFirstOrigin(origin: Application): void {
+        if ( !_firstOrigin && origin) {
+            _firstOrigin = origin;
+        }
     }
+    static get firstOrigin(): Application {
+        return _firstOrigin;
+    }
+
+    // endregion static
 
     defaultConfiguration(): void {
-        emptyFn();
+        logger.warn('Should not be called', {fn: 'defaultConfiguration'});
     }
 
-    disable(setting: string): this {
-        return undefined;
+    disable(_s: string): this {
+        logger.warn('Should not be called', {fn: 'disable'});
+        return this;
     }
 
-    disabled(setting: string): boolean {
+    disabled(_s: string): boolean {
+        logger.warn('Should not be called', {fn: 'disabled'});
         return false;
     }
 
-    emit(eventName: string | symbol, ...args: any[]): boolean {
+    enable(_s: string): this {
+        logger.warn('Should not be called', {fn: 'enable'});
+        return this;
+    }
+
+    enabled(_s: string): boolean {
+        logger.warn('Should not be called', {fn: 'enabled'});
         return false;
     }
 
-    enable(setting: string): this {
-        return undefined;
-    }
-
-    enabled(setting: string): boolean {
-        return false;
-    }
-
-    engine(ext: string, fn: (path: string, options: object, callback: (e: any, rendered?: string) => void) => void): this {
-        return undefined;
-    }
-
-    eventNames(): Array<string | symbol> {
-        return undefined;
-    }
-
-    getMaxListeners(): number {
-        return 0;
+    engine(_e: string, _f: (path: string, options: object, callback: (e: any, rendered?: string) => void) => void): this {
+        logger.warn('Should not be called', {fn: 'engine'});
+        return this;
     }
 
     init(): void {
-        emptyFn();
+        logger.warn('Should not be called', {fn: 'init'});
     }
 
-    listen(port?: any, hostname?: string | (() => void), backlog?: number | (() => void), callback?: () => void): http.Server {
-        return undefined;
-    }
-
-    listenerCount(eventName: string | symbol): number {
-        return 0;
-    }
-
-    listeners(eventName: string | symbol): Function[] {
-        return [];
-    }
-
-    off(eventName: string | symbol, listener: (...args: any[]) => void): this {
-        return undefined;
-    }
-
-    once(eventName: string | symbol, listener: (...args: any[]) => void): this {
+    listen(_p?: any, _h?: string | (() => void), _b?: number | (() => void), _c?: () => void): http.Server {
+        logger.warn('Should not be called', {fn: 'listen'});
         return undefined;
     }
 
     param(name: string | string[] | ((name: string, matcher: RegExp) => RequestParamHandler), handler?: RequestParamHandler): this {
-        return undefined;
+        return this._origin?.param(name as string, handler) as unknown as this;
     }
 
     path(): string {
-        return "";
+        return this._origin?.path();
     }
 
-    prependListener(eventName: string | symbol, listener: (...args: any[]) => void): this {
-        return undefined;
+    render(_n: string, _o?: object | ((err: Error, html: string) => void), _c?: (err: Error, html: string) => void): void {
+        logger.warn('Should not be called', {fn: 'render'});
     }
 
-    prependOnceListener(eventName: string | symbol, listener: (...args: any[]) => void): this {
-        return undefined;
+    route(_p: unknown): any {
+        logger.warn('Should not be called', {fn: 'route'});
     }
 
-    rawListeners(eventName: string | symbol): Function[] {
-        return [];
-    }
-
-    removeAllListeners(event?: string | symbol): this {
-        return undefined;
-    }
-
-    removeListener(eventName: string | symbol, listener: (...args: any[]) => void): this {
-        return undefined;
-    }
-
-    render(name: string, options?: object | ((err: Error, html: string) => void), callback?: (err: Error, html: string) => void): void {
-        emptyFn();
-    }
-
-    route(prefix): any {
-        emptyFn();
-    }
-
-    set(setting: string, val: any): this {
-        return undefined;
-    }
-
-    setMaxListeners(n: number): this {
-        return undefined;
+    set(_s: string, _v: any): this {
+        logger.warn('Should not be called', {fn: 'set'});
+        return this;
     }
 }
+
+const logger: Logger = $log.create(MockApplication);

@@ -1,8 +1,25 @@
-# http-mock
+# Leyyo: Http Mock
+Http Mock library for Leyyo framework
 
-# TODO
+## Import
+- `npm i @leyyo/http-mock`
 
-## Author
-- `Date` 2020-11-15
-- `Name` Mustafa Yelmer
-- `Repo` [github.com/leyyonet/http-mock](https://github.com/leyyonet/http-mock)
+## Standards
+- Language: `TS`
+- Eslint: `Yes`
+- Static Code Analysis: `Yes` *IntelliJ Code Inspections*
+- DDD - Document Driven: `Yes`
+- DDD - Domain Driven: `Yes`
+- EDD - Exception Driven: `Yes`
+- TDD - Test Driven: `Yes`
+- LDD - Log Driven: `Yes`
+- 12FA - 12 Factor-App: `50%` *Partially*
+
+## Dependencies
+### NO
+
+---
+### Prepared by
+- Mustafa Yelmer
+- mustafayelmer(at)gmail.com
+- `2022-01-17`

@@ -1,83 +1,66 @@
-import {Application, CookieOptions, Errback, Request, Response} from "express";
-import {RecLike, leyyo, logger, OneOrMore, FuncLike, Key, emptyFn} from "@leyyo/core";
-import {OutgoingHttpHeader, OutgoingHttpHeaders} from "http";
-import {Socket} from "net";
-import mime from "mime";
-import {
+import type {Application, CookieOptions, Errback, Request, Response} from "express";
+import type {Socket} from "net";
+import * as mime from "mime-types";
+import type {
     MockResponseLike,
     MockResponseResolve,
-    ResponseCookie,
+    ResponseCookies,
     ResponseData,
-    ResponseErrorCallback
+    ResponseErrorCallback,
+    ResponseLocal
 } from "./index-types";
-import {Fqn} from "@leyyo/fqn";
-import {FQN_NAME} from "../internal-component";
-import {MockApplication} from "../application";
+import {$log} from "@leyyo/common";
+import type {Dict, KeyValue, Logger, OneOrMore} from "@leyyo/common";
+import {HttpEvent, type HttpHeaders, type HttpStatus} from "../shared";
+import type {OutgoingHttpHeader, OutgoingHttpHeaders} from "node:http";
 
+let _firstOrigin: Response;
 
-// noinspection JSUnusedGlobalSymbols
-@Fqn(...FQN_NAME)
-export class MockResponse<D = ResponseData, L extends RecLike = RecLike> implements MockResponseLike<D, L>, RecLike {
+export class MockResponse<R extends ResponseData, L extends ResponseLocal = ResponseLocal> extends HttpEvent<Response> implements MockResponseLike<R, L> {
+    // region property
     private _headersSent: boolean; // after send it is true
-    readonly isFake: boolean;
-
-    [key: string]: unknown;
-    private readonly _resolver: MockResponseResolve;
-    readonly app: Application;
-    readonly locals: L;
-    sendDate: boolean;
-    statusMessage: string;
-    private _headers: RecLike<OneOrMore<string>>;
-    private _cookies: RecLike<ResponseCookie>;
-    private _clearedCookies: RecLike<CookieOptions>;
-    private _data: ResponseData;
+    private readonly _resolver: MockResponseResolve<R>;
+    private _headers: HttpHeaders;
+    private _cookies: ResponseCookies;
+    private _clearedCookies: Dict<CookieOptions>;
+    private _data: R;
     private _status: number;
-    charset: string;
-    chunkedEncoding: boolean;
-    destroyed: boolean;
-    readonly connection: Socket | null;
-    finished: boolean;
-    readonly req: Request;
-    useChunkedEncodingByDefault: boolean;
-    readonly writable: boolean;
-    readonly writableCorked: number;
-    readonly writableEnded: boolean;
-    readonly writableFinished: boolean;
-    readonly writableHighWaterMark: number;
-    readonly writableLength: number;
-    readonly writableObjectMode: boolean;
-    shouldKeepAlive: boolean;
-    readonly socket: Socket | null;
-    statusCode: number;
-    writeHead: ((statusCode: number, statusMessage?: string, headers?: (OutgoingHttpHeaders | OutgoingHttpHeader[])) => this) & ((statusCode: number, headers?: (OutgoingHttpHeaders | OutgoingHttpHeader[])) => this);
-    closed: boolean;
-    errored: Error;
-    writableNeedDrain: boolean;
+    readonly locals: L;
+    readonly isFake: boolean;
+    [another: string]: unknown;
+    // endregion property
 
-    constructor(resolver: MockResponseResolve, origin?: Response) {
+    // region static
+    // noinspection JSUnusedGlobalSymbols
+    static setFirstOrigin(origin: Response): void {
+        if (!_firstOrigin && origin) {
+            _firstOrigin = origin;
+        }
+    }
+    static get firstOrigin(): Response {
+        return _firstOrigin;
+    }
+    // endregion static
+
+    // region constructor
+    constructor(resolver: MockResponseResolve<R>, origin?: Response) {
+        super(origin);
         if (typeof resolver != "function") {
-            resolver = (dto => {
-                emptyFn();
-            }) as MockResponseResolve;
+            resolver = (() => {
+            }) as MockResponseResolve<R>;
         }
         this._resolver = resolver;
         this.isFake = true;
-        if (!origin?.app) {
-            this.app = new MockApplication() as Application;
-        } else {
-            this.app = origin.app;
-        }
-        this.locals = (leyyo.is.object(origin.locals) ? {...origin.locals} : {}) as L;
         this._headersSent = false;
+
+        this.locals = (origin?.locals ?? {}) as L;
         this._clear();
     }
-
+    // endregion constructor
 
     // region private
-
-
-    private _send(data?: ResponseData): this {
-        if (!this._headersSent) {
+    private _send(data?: R): this {
+        if ( !this._headersSent) {
             this._headersSent = true;
             if (data !== undefined) {
                 this._data = data;
@@ -89,11 +72,11 @@ export class MockResponse<D = ResponseData, L extends RecLike = RecLike> impleme
                 cookies: this._cookies,
                 clearedCookies: this._clearedCookies,
                 data: this._data,
-                locals: this.locals,
             });
         }
         return this;
     }
+
     private _setHeader(key: string, value: OneOrMore<string>): this {
         this._headers[key] = value;
         return this;
@@ -120,51 +103,100 @@ export class MockResponse<D = ResponseData, L extends RecLike = RecLike> impleme
         this._data = undefined;
         this._status = 200;
     }
+    // endregion private
 
-    _construct(callback?: ResponseErrorCallback): void {
-        emptyFn();
+    // region stream
+    destroyed: boolean;
+    closed: boolean;
+    errored: Error;
+    readonly writable: boolean;
+    readonly writableAborted: boolean;
+    readonly writableCorked: number;
+    readonly writableEnded: boolean;
+    readonly writableFinished: boolean;
+    readonly writableHighWaterMark: number;
+    readonly writableLength: number;
+    readonly writableObjectMode: boolean;
+    writableNeedDrain: boolean;
+    _construct(_c?: ResponseErrorCallback): void {
+        logger.warn('Should not be called', {fn: '_construct'});
     }
 
-    _destroy(error: Error | null, callback: ResponseErrorCallback): void {
-        emptyFn();
+    _destroy(_e: Error | null, _c: ResponseErrorCallback): void {
+        logger.warn('Should not be called', {fn: '_destroy'});
     }
 
-    _final(callback: ResponseErrorCallback): void {
-        emptyFn();
+    _final(_c: ResponseErrorCallback): void {
+        logger.warn('Should not be called', {fn: '_final'});
     }
 
-    _write(chunk: unknown, encoding: BufferEncoding, callback: ResponseErrorCallback): void {
-        emptyFn();
+    _write(_c: unknown, _e: BufferEncoding, _r: ResponseErrorCallback): void {
+        logger.warn('Should not be called', {fn: '_write'});
     }
 
-    _writev(chunks: Array<{ chunk: unknown; encoding: BufferEncoding }>, callback: ResponseErrorCallback): void {
-        emptyFn();
+    _writev(_c: Array<{ chunk: unknown; encoding: BufferEncoding }>, _b: ResponseErrorCallback): void {
+        logger.warn('Should not be called', {fn: '_writev'});
     }
-
-    addTrailers(headers: OutgoingHttpHeaders | Array<[string, string]>): void {
-        emptyFn();
-    }
-
-    assignSocket(socket: Socket): void {
-        emptyFn();
-    }
-    get headersSent(): boolean {
-        return this._headersSent;
-    }
-
-
     cork(): void {
-        emptyFn();
+        logger.warn('Should not be called', {fn: 'cork'});
     }
 
-    destroy(error: Error | undefined): this {
+    destroy(_e: Error | undefined): this {
+        logger.warn('Should not be called', {fn: 'destroy'});
+        return this;
+    }
+    pipe<T extends NodeJS.WritableStream>(_d: T, _o: { end?: boolean | undefined } | undefined): T {
+        logger.warn('Should not be called', {fn: 'pipe'});
+        return undefined;
+    }
+    setDefaultEncoding(_e: BufferEncoding): this {
+        logger.warn('Should not be called', {fn: 'setDefaultEncoding'});
+        return this;
+    }
+    uncork(): void {
+        logger.warn('Should not be called', {fn: 'uncork'});
+    }
+
+    end(): this {
+        this._clear();
+        this._send();
         return this;
     }
 
-    detachSocket(socket: Socket): void {
-        emptyFn();
+    write(_b: Uint8Array | string, _c?: ResponseErrorCallback | BufferEncoding, _d?: ResponseErrorCallback): boolean {
+        logger.warn('Should not be called', {fn: 'write'});
+        return false;
     }
 
+    compose<T>(_s: ComposeFnParam | Iterable<T> | AsyncIterable<T> | T, _o: {
+        signal: AbortSignal
+    } | undefined): T {
+        logger.warn('Should not be called', {fn: 'compose'});
+        return undefined;
+    }
+    // endregion stream
+
+    // region http
+    sendDate: boolean;
+    statusMessage: string;
+    chunkedEncoding: boolean;
+    shouldKeepAlive: boolean;
+    finished: boolean;
+    get connection(): Socket {return this.socket;}
+    useChunkedEncodingByDefault: boolean;
+    readonly socket: Socket | null;
+    statusCode: number;
+    writeHead: ((statusCode: number, statusMessage?: string, headers?: (OutgoingHttpHeaders | OutgoingHttpHeader[])) => this) & ((statusCode: number, headers?: (OutgoingHttpHeaders | OutgoingHttpHeader[])) => this);
+    strictContentLength: boolean;
+    addTrailers(_h: OutgoingHttpHeaders | Array<[string, string]>): void {
+        logger.warn('Should not be called', {fn: 'addTrailers'});
+    }
+    assignSocket(_s: Socket): void {
+        logger.warn('Should not be called', {fn: 'assignSocket'});
+    }
+    detachSocket(_s: Socket): void {
+        logger.warn('Should not be called', {fn: 'detachSocket'});
+    }
     flushHeaders(): void {
         this._headers = {};
     }
@@ -174,78 +206,99 @@ export class MockResponse<D = ResponseData, L extends RecLike = RecLike> impleme
     }
 
     getHeaderNames(): string[] {
-        return [];
+        return Object.keys(this._headers);
     }
 
     getHeaders(): OutgoingHttpHeaders {
-        return {};
+        return this._headers;
     }
 
     hasHeader(name: string): boolean {
-        return false;
+        return this._headers[name] !== undefined;
     }
-
-    json(data: D): this {
-        this._setHeader('Content-Type', 'application/json');
-        this._send(data);
-        return this;
-    }
-
-    jsonp(data: D): this {
-        this._setHeader('Content-Type', 'application/json');
-        this._send(data);
-        return this;
-    }
-
-    pipe<T>(destination: T, options: { end?: boolean | undefined } | undefined): T {
-        return destination;
-    }
-
     removeHeader(name: string): void {
-        emptyFn();
+        if (this._headers[name] !== undefined) {
+            delete this._headers[name];
+        }
     }
-
-
-    send(body?: unknown): this {
-        this._send(body);
-        return this;
-    }
-
-    setDefaultEncoding(encoding: BufferEncoding): this {
-        return this;
-    }
-
     setHeader(name: string, value: number | string | ReadonlyArray<string>): this {
+        this._headers[name] = value as string;
         return this;
     }
-
-    setTimeout(msecs: number, callback: (() => void) | undefined): this {
+    setTimeout(_m: number, _c: (() => void) | undefined): this {
+        logger.warn('Should not be called', {fn: 'setTimeout'});
         return this;
     }
-
-    uncork(): void {
-        emptyFn();
-    }
-
-
-
-    writeContinue(callback: (() => void) | undefined): void {
-        emptyFn();
+    writeContinue(_c: (() => void) | undefined): void {
+        logger.warn('Should not be called', {fn: 'writeContinue'});
     }
 
 
     writeProcessing(): void {
-        emptyFn();
+        logger.warn('Should not be called', {fn: 'writeProcessing'});
     }
 
-    addListener(eventName: string | symbol, listener: FuncLike): this {
-        return undefined;
+
+    appendHeader(name: string, value: string | readonly string[]): this {
+        if (this._headers[name] === undefined) {
+            this._headers[name] = [];
+        }
+        else if ( !Array.isArray(this._headers[name])) {
+            this._headers[name] = [this._headers[name] as string];
+        }
+        if (Array.isArray(value)) {
+            (this._headers[name] as Array<string>).push(...value);
+        }
+        else {
+            (this._headers[name] as Array<string>).push(value as string);
+        }
+        return this;
     }
 
-    append(key: string, value?: OneOrMore<string>): this {
-        return this._setHeader(key, value);
+
+    setHeaders(headers: Headers | Map<string, number | string | readonly string[]>): this {
+        this._headers = {};
+        if (headers instanceof Map) {
+            for (const [k, v] of headers.entries()) {
+                this._headers[k as string] = v as string;
+            }
+        }
+        else {
+            for (const [k, v] of Object.entries(headers)) {
+                this._headers[k as string] = v as string;
+            }
+        }
+        return this;
     }
 
+    writeEarlyHints(_h: Record<string, string | string[]>, _c: (() => void) | undefined): void {
+        logger.warn('Should not be called', {fn: 'writeEarlyHints'});
+    }
+    // endregion http
+
+    // region express
+    readonly app: Application;
+    charset: string;
+    readonly req: Request;
+    get headersSent(): boolean {
+        return this._headersSent;
+    }
+
+    json(data: R): this {
+        this._setHeader('Content-Type', 'application/json');
+        this._send(data);
+        return this;
+    }
+
+    jsonp(data: R): this {
+        this._setHeader('Content-Type', 'application/json');
+        this._send(data);
+        return this;
+    }
+    send(body?: unknown): this {
+        this._send(body as R);
+        return this;
+    }
     attachment(filename?: string): this {
         filename = filename ? `; filename="${filename}"` : '';
         return this._setHeader('Content-Disposition', `attachment${filename}`);
@@ -255,7 +308,9 @@ export class MockResponse<D = ResponseData, L extends RecLike = RecLike> impleme
         this._clearedCookies[name] = options;
         return this;
     }
-
+    append(key: string, value?: OneOrMore<string>): this {
+        return this._setHeader(key, value);
+    }
     contentType(type: string): this {
         return this.type(type);
     }
@@ -265,7 +320,7 @@ export class MockResponse<D = ResponseData, L extends RecLike = RecLike> impleme
             this._cancelCookieClear(key);
             return this._setCookie(key, value as string, option);
         }
-        if (leyyo.is.object(key)) {
+        if (key) {
             for (const [k, v] of Object.entries(key)) {
                 this._cancelCookieClear(k);
                 this._setCookie(k, v as string, value ?? option);
@@ -274,25 +329,12 @@ export class MockResponse<D = ResponseData, L extends RecLike = RecLike> impleme
         return this;
     }
 
-    download(path: string, fn?: Errback | string, err?: unknown, errBack?: Errback): void {
-        LOG.warn('unsupported.feature', {fn: 'download', path});
-    }
-
-    emit(eventName: string | symbol, ...args: unknown[]): boolean {
-        return false;
-    }
-
-    end(): this {
-        this._clear();
-        this._send();
-        return this;
-    }
-    eventNames(): Array<string | symbol> {
-        return [];
+    download(path: string, _fn?: Errback | string, _err?: unknown, _errBack?: Errback): void {
+        logger.warn('unsupported.feature', {fn: 'download', path});
     }
 
     format(obj: unknown): this {
-        LOG.warn('unsupported.feature', {fn: 'format', obj});
+        logger.warn('unsupported.feature', {fn: 'format', obj});
         return this;
     }
 
@@ -300,16 +342,12 @@ export class MockResponse<D = ResponseData, L extends RecLike = RecLike> impleme
         return (typeof field === 'string') ? this._headers[field] as string : undefined;
     }
 
-    getMaxListeners(): number {
-        return 0;
-    }
-
     header(field: unknown, value?: OneOrMore<string>): this {
         return this._setHeader(field as string, value);
     }
 
     links(map: unknown): this {
-        if (leyyo.is.object(map)) {
+        if (map) {
             const values = [];
             for (const [k, v] of Object.entries(map)) {
                 values.push(`<${v}>; rel="${k}"`);
@@ -321,61 +359,21 @@ export class MockResponse<D = ResponseData, L extends RecLike = RecLike> impleme
         return this;
     }
 
-    listenerCount(eventName: string | symbol): number {
-        return 0;
-    }
-
-    listeners(eventName: string | symbol): Array<FuncLike> {
-        return [];
-    }
-
     location(url: string): this {
-        LOG.warn('unsupported.feature', {fn: 'location', url});
+        logger.warn('unsupported.feature', {fn: 'location', url});
         return this;
     }
 
-    off(eventName: string | symbol, listener: FuncLike): this {
-        return this;
+    redirect(url: KeyValue, status?: KeyValue): void {
+        logger.warn('unsupported.feature', {fn: 'redirect', url, status});
     }
 
-    on(eventName: string | symbol, listener: FuncLike): this {
-        return this;
+    render(_v: string, _o?: Dict | ((err: Error, html: string) => void), _c?: (err: Error, html: string) => void): void {
+        logger.warn('unsupported.feature', {fn: 'render'});
     }
 
-    once(eventName: string | symbol, listener: FuncLike): this {
-        return this;
-    }
-
-    prependListener(eventName: string | symbol, listener: FuncLike): this {
-        return this;
-    }
-
-    prependOnceListener(eventName: string | symbol, listener: FuncLike): this {
-        return this;
-    }
-
-    rawListeners(eventName: string | symbol): Function[] {
-        return [];
-    }
-
-    redirect(url: Key, status?: Key): void {
-        LOG.warn('unsupported.feature', {fn: 'redirect', url, status});
-    }
-
-    removeAllListeners(event?: string | symbol): this {
-        return this;
-    }
-
-    removeListener(eventName: string | symbol, listener: FuncLike): this {
-        return this;
-    }
-
-    render(view: string, options?: RecLike | ((err: Error, html: string) => void), callback?: (err: Error, html: string) => void): void {
-        LOG.warn('unsupported.feature', {fn: 'render'});
-    }
-
-    sendFile(path: string, fn?: unknown, err?: Errback): void {
-        LOG.warn('unsupported.feature', {fn: 'sendFile', path});
+    sendFile(path: string, _fn?: unknown, _err?: Errback): void {
+        logger.warn('unsupported.feature', {fn: 'sendFile', path});
     }
 
     sendStatus(status: number): this {
@@ -384,15 +382,11 @@ export class MockResponse<D = ResponseData, L extends RecLike = RecLike> impleme
         return this;
     }
 
-    sendfile(path: string, options?: unknown, fn?: Errback): void {
-        LOG.warn('unsupported.feature', {fn: 'render'});
-    }
-
     set(field: unknown, value?: string | string[]): this {
         if (typeof field === 'string') {
             return this._setHeader(field, value as string);
         }
-        if (leyyo.is.object(field)) {
+        if (field) {
             for (const [k, v] of Object.entries(field)) {
                 this._setHeader(k, v as string);
             }
@@ -400,11 +394,7 @@ export class MockResponse<D = ResponseData, L extends RecLike = RecLike> impleme
         return this;
     }
 
-    setMaxListeners(n: number): this {
-        return this;
-    }
-
-    status(status: number): this {
+    status(status: HttpStatus): this {
         this._status = status;
         return this;
     }
@@ -413,8 +403,9 @@ export class MockResponse<D = ResponseData, L extends RecLike = RecLike> impleme
         if (typeof type === 'string') {
             if (type.includes('/')) {
                 this.header('Content-Type', type);
-            } else {
-                this.header('Content-Type', mime.getType(type));
+            }
+            else {
+                this.header('Content-Type', mime.lookup(type) as string);
             }
         }
         return this;
@@ -424,11 +415,8 @@ export class MockResponse<D = ResponseData, L extends RecLike = RecLike> impleme
         this.header('Vary', field);
         return this;
     }
-
-    write(buffer: Uint8Array | string, cb?: ResponseErrorCallback | BufferEncoding, cb2?: ResponseErrorCallback): boolean {
-        return false;
-    }
-
-    // endregion private
+    // endregion express
 }
-const LOG = logger.assign(MockResponse);
+const logger: Logger = $log.create(MockResponse);
+
+type ComposeFnParam = (source: any) => void;
