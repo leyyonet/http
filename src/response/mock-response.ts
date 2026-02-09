@@ -10,7 +10,7 @@ import {
     ResponseLocal
 } from "./index-types";
 import {Dict, HttpStatus, KeyValue, Logger, newLogger, OneOrMore} from "@leyyo/common";
-import {HttpEvent, HttpHeaders} from "../shared";
+import {HttpEvent, HttpHeaders} from "../event";
 import {OutgoingHttpHeader, OutgoingHttpHeaders} from "node:http";
 
 let _firstOrigin: Response;

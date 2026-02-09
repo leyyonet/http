@@ -1,7 +1,7 @@
 import {Application, RequestParamHandler, Router} from "express";
 import * as http from "http";
 import {MockApplicationLike} from "./index.types";
-import {HttpEvent} from "../shared";
+import {HttpEvent} from "../event";
 import {Logger, newLogger} from "@leyyo/common";
 
 let _firstOrigin: Application;

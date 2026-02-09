@@ -1,7 +1,8 @@
 import {Request} from "express";
 import {ResponseData} from "../response";
 import {Arr} from "@leyyo/common";
-import {HttpCookies, HttpData, HttpHeaders, HttpMethod, HttpParams, HttpQuery} from "../shared";
+import {HttpCookies, HttpData, HttpHeaders, HttpParams, HttpQuery} from "../event";
+import {HttpMethod} from "../enum";
 
 export interface RequestLocal {
 }

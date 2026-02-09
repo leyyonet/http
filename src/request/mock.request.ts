@@ -20,13 +20,12 @@ import {
     _StreamVoid,
     HttpCookies,
     HttpEvent,
-    HttpMethod,
     HttpParams,
-    HttpProtocol,
     HttpQuery
-} from "../shared";
+} from "../event";
 import {delay, Dict, Fnc, HttpStatus, Logger, Mutable, newLogger, OneOrMore} from "@leyyo/common";
 import {ArrayOptions, Readable} from "node:stream";
+import {HttpMethod, HttpProtocol} from "../enum";
 
 let _firstOrigin: Request;
 
