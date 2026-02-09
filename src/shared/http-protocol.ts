@@ -6,6 +6,7 @@ const literals = [
  * Http Protocol
  * */
 export type HttpProtocol = typeof literals[number];
+// noinspection JSUnusedGlobalSymbols
 /**
  * @type {ReadonlyArray<HttpProtocol>}
  * */

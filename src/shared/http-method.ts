@@ -15,6 +15,7 @@ const literals = [
  * */
 type _HttpMethod = typeof literals[number];
 export type HttpMethod = _HttpMethod | Uppercase<_HttpMethod>
+// noinspection JSUnusedGlobalSymbols
 /**
  * @type {ReadonlyArray<HttpMethod>}
  * */

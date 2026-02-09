@@ -1,10 +1,14 @@
 import type {Fnc} from "@leyyo/common";
 import type {EventEmitter} from "node:events";
 
-export abstract class HttpEvent<O extends EventEmitter> implements EventEmitter{
+/**
+ * Abstract class for Request and Response
+ * */
+export abstract class HttpEvent<O extends EventEmitter> implements EventEmitter {
 
     protected constructor(protected _origin: O) {
     }
+
     /** @inheritDoc */
     addListener(e: string | symbol, l: Fnc): this {
         this._origin?.addListener(e, l);
