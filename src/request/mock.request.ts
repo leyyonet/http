@@ -23,9 +23,10 @@ import {
     HttpParams,
     HttpQuery
 } from "../event/index.js";
-import {delay, Dict, Fnc, HttpStatus, logCommon, Logger, Mutable, OneOrMore} from "@leyyo/common";
+import {delay, Dict, Fnc, HttpStatus, logCommon, Logger, Mutable, OneOrMore, setFqn} from "@leyyo/common";
 import {ArrayOptions, Readable} from "node:stream";
 import {HttpMethod, HttpProtocol} from "../enum/index.js";
+import {FQN} from "../internal.js";
 
 let _firstOrigin: Request;
 
@@ -555,7 +556,7 @@ export class MockRequest<B extends RequestBody = RequestBody, L extends RequestL
 
     // endregion static
 }
-
+setFqn(MockRequest, FQN);
 const logger: Logger = logCommon.of(MockRequest);
 
 // region functions

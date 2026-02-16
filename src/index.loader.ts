@@ -13,4 +13,5 @@ export const loader_leyyoHttpMock = defineLoader(FQN,
     () => import('./application/mock-application.js').then(m => m.MockApplication),
     () => import('./request/mock.request.js').then(m => m.MockRequest),
     () => import('./response/mock-response.js').then(m => m.MockResponse),
+    () => import('./http-mock.js').then(m => m.httpMock),
 );

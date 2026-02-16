@@ -2,8 +2,9 @@ import {MockResponse, type MockResponseResolve, type ResponseData} from "./respo
 import {MockRequest, type MockServiceRequest} from "./request/index.js";
 import {Application, Request} from "express";
 import {MockApplication} from "./application/index.js";
-import {Dict} from "@leyyo/common";
+import {Dict, setFqn} from "@leyyo/common";
 import {HttpMockLike, HttpMockTuple} from "./index.types.js";
+import {FQN} from "./internal.js";
 
 /**
  * Http mock class
@@ -38,6 +39,7 @@ class HttpMock implements HttpMockLike {
         return [newReq, newRes, newApp];
     }
 }
+setFqn(HttpMock, FQN);
 
 // noinspection JSUnusedGlobalSymbols
 /**

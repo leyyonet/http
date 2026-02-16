@@ -9,9 +9,10 @@ import {
     ResponseErrorCallback,
     ResponseLocal
 } from "./index-types.js";
-import {Dict, HttpStatus, KeyValue, logCommon, Logger, OneOrMore} from "@leyyo/common";
+import {Dict, HttpStatus, KeyValue, logCommon, Logger, OneOrMore, setFqn} from "@leyyo/common";
 import {HttpEvent, HttpHeaders} from "../event/index.js";
 import {OutgoingHttpHeader, OutgoingHttpHeaders} from "node:http";
+import {FQN} from "../internal.js";
 
 let _firstOrigin: Response;
 
@@ -621,6 +622,7 @@ export class MockResponse<R extends ResponseData, L extends ResponseLocal = Resp
 
     // endregion static
 }
+setFqn(MockResponse, FQN);
 
 const logger: Logger = logCommon.of(MockResponse);
 
