@@ -1,9 +1,9 @@
-import {MockResponse, type MockResponseResolve, type ResponseData} from "./response";
-import {MockRequest, type MockServiceRequest} from "./request";
+import {MockResponse, type MockResponseResolve, type ResponseData} from "./response/index.js";
+import {MockRequest, type MockServiceRequest} from "./request/index.js";
 import {Application, Request} from "express";
-import {MockApplication} from "./application";
+import {MockApplication} from "./application/index.js";
 import {Dict} from "@leyyo/common";
-import {HttpMockLike, HttpMockTuple} from "./index.types";
+import {HttpMockLike, HttpMockTuple} from "./index.types.js";
 
 /**
  * Http mock class

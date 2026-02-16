@@ -9,7 +9,7 @@ import {
     RequestBody,
     RequestErrorCallback,
     RequestLocal
-} from "./index.types";
+} from "./index.types.js";
 import {
     _StreamAbort,
     _StreamBool,
@@ -22,10 +22,10 @@ import {
     HttpEvent,
     HttpParams,
     HttpQuery
-} from "../event";
-import {delay, Dict, Fnc, HttpStatus, Logger, Mutable, newLogger, OneOrMore} from "@leyyo/common";
+} from "../event/index.js";
+import {delay, Dict, Fnc, HttpStatus, logCommon, Logger, Mutable, OneOrMore} from "@leyyo/common";
 import {ArrayOptions, Readable} from "node:stream";
-import {HttpMethod, HttpProtocol} from "../enum";
+import {HttpMethod, HttpProtocol} from "../enum/index.js";
 
 let _firstOrigin: Request;
 
@@ -556,7 +556,7 @@ export class MockRequest<B extends RequestBody = RequestBody, L extends RequestL
     // endregion static
 }
 
-const logger: Logger = newLogger(MockRequest);
+const logger: Logger = logCommon.of(MockRequest);
 
 // region functions
 function _removePath(req: Request): void {

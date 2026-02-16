@@ -1,2 +1,2 @@
-export * from './index.types';
-export * from './http-event';
+export * from './index.types.js';
+export * from './http-event.js';

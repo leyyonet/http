@@ -1,6 +1,6 @@
 import {Application, Request, Response} from "express";
-import {MockResponseResolve, ResponseData} from "./response";
-import {MockServiceRequest} from "./request";
+import {MockResponseResolve, ResponseData} from "./response/index.js";
+import {MockServiceRequest} from "./request/index.js";
 import {Dict} from "@leyyo/common";
 
 export type HttpMockTuple = [Request, Response, Application];

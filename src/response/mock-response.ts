@@ -8,9 +8,9 @@ import {
     ResponseData,
     ResponseErrorCallback,
     ResponseLocal
-} from "./index-types";
-import {Dict, HttpStatus, KeyValue, Logger, newLogger, OneOrMore} from "@leyyo/common";
-import {HttpEvent, HttpHeaders} from "../event";
+} from "./index-types.js";
+import {Dict, HttpStatus, KeyValue, logCommon, Logger, OneOrMore} from "@leyyo/common";
+import {HttpEvent, HttpHeaders} from "../event/index.js";
 import {OutgoingHttpHeader, OutgoingHttpHeaders} from "node:http";
 
 let _firstOrigin: Response;
@@ -622,6 +622,6 @@ export class MockResponse<R extends ResponseData, L extends ResponseLocal = Resp
     // endregion static
 }
 
-const logger: Logger = newLogger(MockResponse);
+const logger: Logger = logCommon.of(MockResponse);
 
 type ComposeFnParam = (source: any) => void;

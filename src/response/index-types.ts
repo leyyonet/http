@@ -1,6 +1,6 @@
 import {CookieOptions, Response} from "express";
 import {Arr, Dict, HttpStatus} from "@leyyo/common";
-import {HttpData, HttpHeaders} from "../event";
+import {HttpData, HttpHeaders} from "../event/index.js";
 
 /**
  * Response local storage

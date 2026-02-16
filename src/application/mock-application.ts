@@ -1,8 +1,8 @@
 import {Application, RequestParamHandler, Router} from "express";
 import * as http from "http";
-import {MockApplicationLike} from "./index.types";
-import {HttpEvent} from "../event";
-import {Logger, newLogger} from "@leyyo/common";
+import {MockApplicationLike} from "./index.types.js";
+import {HttpEvent} from "../event/index.js";
+import {logCommon, Logger} from "@leyyo/common";
 
 let _firstOrigin: Application;
 
@@ -329,4 +329,4 @@ export class MockApplication extends HttpEvent<Application> implements MockAppli
     // endregion static
 }
 
-const logger: Logger = newLogger(MockApplication);
+const logger: Logger = logCommon.of(MockApplication);

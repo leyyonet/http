@@ -1,2 +1,2 @@
-export * from './http-method';
-export * from './http-protocol';
+export * from './http-method.js';
+export * from './http-protocol.js';
