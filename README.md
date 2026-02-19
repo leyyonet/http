@@ -1,8 +1,8 @@
-# Leyyo: Http Mock
-Http Mock library for Leyyo framework
+# Leyyo: Http Common
+Http common library for Leyyo framework
 
 ## Import
-- `npm i @leyyo/http-mock`
+- `npm i @leyyo/http`
 
 
 ## Standards

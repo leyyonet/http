@@ -1,17 +1,24 @@
 // noinspection JSUnusedGlobalSymbols
-import {defineLoader, loader_leyyoCommon} from "@leyyo/common";
-import {FQN} from "./internal.js";
+import { defineLoader, loader_leyyoCommon } from "@leyyo/common";
+import { FQN } from "./internal.js";
 
-export const loader_leyyoHttpMock = defineLoader(FQN,
-    // dependencies
-    ...loader_leyyoCommon,
+export const loader_leyyoHttpCommon = defineLoader(
+  FQN,
+  // dependencies
+  ...loader_leyyoCommon,
 
-    // enums
-    () => import('./enum/http-method.js').then(m => m.HttpMethodItems),
-    () => import('./enum/http-protocol.js').then(m => m.HttpProtocolItems),
-    // classes
-    () => import('./application/mock-application.js').then(m => m.MockApplication),
-    () => import('./request/mock.request.js').then(m => m.MockRequest),
-    () => import('./response/mock-response.js').then(m => m.MockResponse),
-    () => import('./http-mock.js').then(m => m.httpMock),
+  // enums
+  () => import("./literal/http-method.js").then((m) => m.HttpMethodItems),
+  () => import("./literal/http-place.js").then((m) => m.HttpPlaceItems),
+  () => import("./literal/http-place-extended.js").then((m) => m.HttpPlaceExtendedItems),
+  () => import("./literal/http-protocol.js").then((m) => m.HttpProtocolItems),
+  () => import("./literal/http-state-error.js").then((m) => m.HttpStateError),
+  () => import("./literal/http-state-informational.js").then((m) => m.HttpStateInformational),
+  () => import("./literal/http-state-redirect.js").then((m) => m.HttpStateRedirect),
+  () => import("./literal/http-state-success.js").then((m) => m.HttpStateSuccess),
+  // classes
+  () => import("./application/mock-application.js").then((m) => m.MockApplication),
+  () => import("./request/mock.request.js").then((m) => m.MockRequest),
+  () => import("./response/mock-response.js").then((m) => m.MockResponse),
+  () => import("./http-common.js").then((m) => m.httpCommon),
 );
