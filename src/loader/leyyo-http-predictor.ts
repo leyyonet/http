@@ -1,9 +1,9 @@
-import {defineForetell, enumPool, leyyoCommonForetell, literalPool} from "@leyyo/common";
+import { definePredictor, enumPool, literalPool } from "@leyyo/common";
 import { PCK } from "../internal.js";
 
 // noinspection JSUnusedGlobalSymbols
-export const leyyoHttpForetell = defineForetell(PCK)
-  .dependency(leyyoCommonForetell)
+export const leyyoHttpPredictor = definePredictor(PCK)
+  .dependency(() => import("@leyyo/common").then((m) => m.leyyoCommonPredictor))
   // literals
   .add(
     () =>

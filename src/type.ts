@@ -1,7 +1,14 @@
-import {Application, CookieOptions, Request, RequestParamHandler, Response, Router} from "express";
-import {Arr, HttpStatus, OneOrMore, Rec} from "@leyyo/common";
-import {HttpMethod} from "./literal/index.js";
-import {EventEmitter} from "node:events";
+import {
+  Application,
+  CookieOptions,
+  Request,
+  RequestParamHandler,
+  Response,
+  Router,
+} from "express";
+import { Arr, HttpStatus, OneOrMore, Rec } from "@leyyo/common";
+import { HttpMethod } from "./literal/index.js";
+import { EventEmitter } from "node:events";
 import * as http from "node:http";
 
 // region common
@@ -35,10 +42,10 @@ export interface HttpCommonLike {
    * @return {HttpMockTuple}
    * */
   forBulk<R = ResponseData>(
-      req: Request,
-      service: MockServiceRequest<R>,
-      resolver: MockResponseResolve<R>,
-      custom?: Rec,
+    req: Request,
+    service: MockServiceRequest<R>,
+    resolver: MockResponseResolve<R>,
+    custom?: Rec,
   ): HttpMockTuple;
 }
 // endregion common
@@ -244,8 +251,8 @@ export interface MockApplicationLike extends EventEmitter {
 
   /** @inheritDoc */
   engine(
-      _e: string,
-      _f: (path: string, options: object, callback: (e: any, rendered?: string) => void) => void,
+    _e: string,
+    _f: (path: string, options: object, callback: (e: any, rendered?: string) => void) => void,
   ): this;
 
   /** @inheritDoc */
@@ -253,16 +260,16 @@ export interface MockApplicationLike extends EventEmitter {
 
   /** @inheritDoc */
   listen(
-      _p?: any,
-      _h?: string | (() => void),
-      _b?: number | (() => void),
-      _c?: () => void,
+    _p?: any,
+    _h?: string | (() => void),
+    _b?: number | (() => void),
+    _c?: () => void,
   ): http.Server;
 
   /** @inheritDoc */
   param(
-      name: string | string[] | ((name: string, matcher: RegExp) => RequestParamHandler),
-      handler?: RequestParamHandler,
+    name: string | string[] | ((name: string, matcher: RegExp) => RequestParamHandler),
+    handler?: RequestParamHandler,
   ): this;
 
   /** @inheritDoc */
@@ -270,9 +277,9 @@ export interface MockApplicationLike extends EventEmitter {
 
   /** @inheritDoc */
   render(
-      _n: string,
-      _o?: object | ((err: Error, html: string) => void),
-      _c?: (err: Error, html: string) => void,
+    _n: string,
+    _o?: object | ((err: Error, html: string) => void),
+    _c?: (err: Error, html: string) => void,
   ): void;
 
   /** @inheritDoc */
@@ -328,8 +335,8 @@ export interface MockServiceRequest<B extends RequestBody = RequestBody> {
  * Http mock request, it extends express request
  * */
 export interface MockRequestLike<
-    B extends RequestBody = RequestBody,
-    L extends RequestLocal = RequestLocal,
+  B extends RequestBody = RequestBody,
+  L extends RequestLocal = RequestLocal,
 > extends Request<HttpParams, B, ResponseData, HttpQuery, L> {
   /**
    * Indicates that it's fake/mock request
@@ -430,8 +437,8 @@ export interface ResponseCookie {
  * Http mock response, it extends express response
  * */
 export interface MockResponseLike<
-    R extends ResponseData,
-    L extends ResponseLocal = ResponseLocal,
+  R extends ResponseData,
+  L extends ResponseLocal = ResponseLocal,
 > extends Response<R, L> {
   /**
    * Indicates that it's fake/mock response

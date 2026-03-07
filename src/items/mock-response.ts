@@ -8,11 +8,12 @@ import {
   ResponseData,
   ResponseErrorCallback,
   ResponseLocal,
-} from "./index-types.js";
+} from "../type.js";
 import { Rec, HttpStatus, KeyValue, logCommon, Logger, OneOrMore, setFqn } from "@leyyo/common";
-import { HttpEvent, HttpHeaders } from "../event/index.js";
+import { HttpHeaders } from "../type.js";
 import { OutgoingHttpHeader, OutgoingHttpHeaders } from "node:http";
 import { PCK } from "../internal.js";
+import { HttpEvent } from "./http-event.js";
 
 let _firstOrigin: Response;
 

@@ -1,9 +1,9 @@
 import { Application, RequestParamHandler, Router } from "express";
 import * as http from "http";
-import { MockApplicationLike } from "./index.types.js";
-import { HttpEvent } from "../event/index.js";
+import { MockApplicationLike } from "../type.js";
 import { logCommon, Logger, setFqn } from "@leyyo/common";
 import { PCK } from "../internal.js";
+import { HttpEvent } from "./http-event.js";
 
 let _firstOrigin: Application;
 

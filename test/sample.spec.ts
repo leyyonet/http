@@ -1,5 +1,7 @@
-import { assert, describe, it } from "vitest";
-import { CausedError } from "@leyyo/common";
+import { assert, beforeAll, describe, it } from "vitest";
+import { CausedError, initTest } from "@leyyo/common";
+
+beforeAll(() => initTest());
 
 describe("http", () => {
   it("not symbol", () => {

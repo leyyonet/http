@@ -36,7 +36,7 @@ import {
 import { ArrayOptions, Readable } from "node:stream";
 import { HttpMethod, HttpProtocol } from "../literal/index.js";
 import { PCK } from "../internal.js";
-import {HttpEvent} from "./http-event.js";
+import { HttpEvent } from "./http-event.js";
 
 let _firstOrigin: Request;
 

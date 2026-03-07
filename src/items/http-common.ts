@@ -1,10 +1,16 @@
-import { MockResponse, type MockResponseResolve, type ResponseData } from "./response/index.js";
-import { MockRequest, type MockServiceRequest } from "./request/index.js";
 import { Application, Request } from "express";
-import { MockApplication } from "./application/index.js";
+import { MockApplication } from "./index.js";
 import { Rec, setFqn } from "@leyyo/common";
-import { HttpCommonLike, HttpMockTuple } from "./index.types.js";
-import { PCK } from "./internal.js";
+import { PCK } from "../internal.js";
+import {
+  HttpCommonLike,
+  HttpMockTuple,
+  MockResponseResolve,
+  MockServiceRequest,
+  ResponseData,
+} from "../type.js";
+import { MockRequest } from "./mock-request.js";
+import { MockResponse } from "./mock-response.js";
 
 /**
  * Http common class
