@@ -3,7 +3,7 @@ import * as http from "http";
 import { MockApplicationLike } from "./index.types.js";
 import { HttpEvent } from "../event/index.js";
 import { logCommon, Logger, setFqn } from "@leyyo/common";
-import { FQN } from "../internal.js";
+import { PCK } from "../internal.js";
 
 let _firstOrigin: Application;
 
@@ -343,5 +343,5 @@ export class MockApplication extends HttpEvent<Application> implements MockAppli
 
   // endregion static
 }
-setFqn(MockApplication, FQN);
+setFqn(MockApplication, PCK);
 const logger: Logger = logCommon.of(MockApplication);

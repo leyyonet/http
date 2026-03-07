@@ -9,10 +9,10 @@ import {
   ResponseErrorCallback,
   ResponseLocal,
 } from "./index-types.js";
-import { Dict, HttpStatus, KeyValue, logCommon, Logger, OneOrMore, setFqn } from "@leyyo/common";
+import { Rec, HttpStatus, KeyValue, logCommon, Logger, OneOrMore, setFqn } from "@leyyo/common";
 import { HttpEvent, HttpHeaders } from "../event/index.js";
 import { OutgoingHttpHeader, OutgoingHttpHeaders } from "node:http";
-import { FQN } from "../internal.js";
+import { PCK } from "../internal.js";
 
 let _firstOrigin: Response;
 
@@ -44,7 +44,7 @@ export class MockResponse<R extends ResponseData, L extends ResponseLocal = Resp
   /**
    * Response cleared cookies
    * */
-  private _clearedCookies: Dict<CookieOptions>;
+  private _clearedCookies: Rec<CookieOptions>;
 
   /**
    * Response data
@@ -569,7 +569,7 @@ export class MockResponse<R extends ResponseData, L extends ResponseLocal = Resp
   /** @inheritDoc */
   render(
     _v: string,
-    _o?: Dict | ((err: Error, html: string) => void),
+    _o?: Rec | ((err: Error, html: string) => void),
     _c?: (err: Error, html: string) => void,
   ): void {
     logger.warn("unsupported.feature", { fn: "render" });
@@ -650,7 +650,7 @@ export class MockResponse<R extends ResponseData, L extends ResponseLocal = Resp
 
   // endregion static
 }
-setFqn(MockResponse, FQN);
+setFqn(MockResponse, PCK);
 
 const logger: Logger = logCommon.of(MockResponse);
 

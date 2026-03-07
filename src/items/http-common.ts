@@ -2,9 +2,9 @@ import { MockResponse, type MockResponseResolve, type ResponseData } from "./res
 import { MockRequest, type MockServiceRequest } from "./request/index.js";
 import { Application, Request } from "express";
 import { MockApplication } from "./application/index.js";
-import { Dict, setFqn } from "@leyyo/common";
+import { Rec, setFqn } from "@leyyo/common";
 import { HttpCommonLike, HttpMockTuple } from "./index.types.js";
-import { FQN } from "./internal.js";
+import { PCK } from "./internal.js";
 
 /**
  * Http common class
@@ -36,7 +36,7 @@ class HttpCommon implements HttpCommonLike {
     req: Request,
     service: MockServiceRequest<R>,
     resolver: MockResponseResolve<R>,
-    custom?: Dict,
+    custom?: Rec,
   ): HttpMockTuple {
     const newReq = new MockRequest(service, req, custom);
     const newRes = new MockResponse(resolver, req.res);
@@ -45,7 +45,7 @@ class HttpCommon implements HttpCommonLike {
     return [newReq, newRes, newApp];
   }
 }
-setFqn(HttpCommon, FQN);
+setFqn(HttpCommon, PCK);
 
 // noinspection JSUnusedGlobalSymbols
 /**

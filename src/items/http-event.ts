@@ -1,6 +1,6 @@
 import { Fnc, setFqn } from "@leyyo/common";
 import type { EventEmitter } from "node:events";
-import { FQN } from "../internal.js";
+import { PCK } from "../internal.js";
 
 /**
  * Abstract class for Request and Response
@@ -92,4 +92,4 @@ export abstract class HttpEvent<O extends EventEmitter> implements EventEmitter 
     return this;
   }
 }
-setFqn(HttpEvent, FQN);
+setFqn(HttpEvent, PCK);

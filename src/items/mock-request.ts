@@ -9,7 +9,7 @@ import {
   RequestBody,
   RequestErrorCallback,
   RequestLocal,
-} from "./index.types.js";
+} from "../type.js";
 import {
   _StreamAbort,
   _StreamBool,
@@ -19,24 +19,24 @@ import {
   _StreamReduce,
   _StreamVoid,
   HttpCookies,
-  HttpEvent,
   HttpParams,
   HttpQuery,
-} from "../event/index.js";
+} from "../type.js";
 import {
   delay,
-  Dict,
   Fnc,
   HttpStatus,
   logCommon,
   Logger,
   Mutable,
   OneOrMore,
+  Rec,
   setFqn,
 } from "@leyyo/common";
 import { ArrayOptions, Readable } from "node:stream";
 import { HttpMethod, HttpProtocol } from "../literal/index.js";
-import { FQN } from "../internal.js";
+import { PCK } from "../internal.js";
+import {HttpEvent} from "./http-event.js";
 
 let _firstOrigin: Request;
 
@@ -65,7 +65,7 @@ export class MockRequest<B extends RequestBody = RequestBody, L extends RequestL
    * @param {Request} origin - first real request
    * @param {object} custom - custom values
    * */
-  constructor(service?: MockServiceRequest<B>, origin?: Request, custom?: Dict) {
+  constructor(service?: MockServiceRequest<B>, origin?: Request, custom?: Rec) {
     super(origin);
     _attachOrigin(this._cast, origin);
     _attachService(this._cast, service);
@@ -290,7 +290,7 @@ export class MockRequest<B extends RequestBody = RequestBody, L extends RequestL
   socket: Socket;
 
   /** @inheritDoc*/
-  headersDistinct: NodeJS.Dict<string[]>;
+  headersDistinct: Rec<string[]>;
 
   /** @inheritDoc*/
   rawHeaders: string[];
@@ -302,7 +302,7 @@ export class MockRequest<B extends RequestBody = RequestBody, L extends RequestL
   rawTrailers: string[];
 
   /** @inheritDoc*/
-  trailersDistinct: NodeJS.Dict<string[]>;
+  trailersDistinct: Rec<string[]>;
 
   /** @inheritDoc*/
   get connection(): Socket {
@@ -577,7 +577,7 @@ export class MockRequest<B extends RequestBody = RequestBody, L extends RequestL
 
   // endregion static
 }
-setFqn(MockRequest, FQN);
+setFqn(MockRequest, PCK);
 const logger: Logger = logCommon.of(MockRequest);
 
 // region functions
@@ -637,7 +637,7 @@ function _attachOrigin(_req: Request, origin: Request): void {
  * @param {Request} req
  * @param {object} custom
  * */
-function _attachCustom(req: Request, custom: Dict): void {
+function _attachCustom(req: Request, custom: Rec): void {
   if (custom) {
     for (const [key, value] of Object.entries(custom)) {
       if (req[key] === undefined) {
