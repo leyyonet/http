@@ -1,2 +1,6 @@
-leyyo.http:
-  test: true
+ignore: false
+rules:
+  - def-component
+config:
+  leyyo.http:
+    foo: bar
