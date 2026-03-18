@@ -1,6 +1,12 @@
 ignore: false
 rules:
-  - def-component
+  - app-component
+group: null
+assets:
+  folder: null
+minify:
+  terser: false
+  obfuscator: false
 config:
-  leyyo.http:
+  http:
     foo: bar
