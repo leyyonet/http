@@ -1,2 +1,12 @@
-leyyo.http:
-  test: true
+ignore: false
+rules:
+  - def-component
+group: '*'
+assets:
+  folder: null
+minify:
+  terser: false
+  obfuscator: false
+config:
+  leyyo.http:
+    foo: bar

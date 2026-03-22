@@ -32,7 +32,7 @@
 | `enum`      | [HttpStateSuccess](./src/literal/http-state-success.ts)             | `f` `p` `i` | success state (2xx)       |
 | `predictor` | [leyyoHttpPredictor](src/loader/leyyo-http-predictor.ts)            |             |                           |
 | `lazy`      | [leyyoHttpLazy](src/loader/leyyo-http-lazy.ts)                      |             |                           |
-> Props: `P`: **predictor**, `F`: **FQN**, `E`: **Emit**, `I`: **I18N**
+> Props: `p`: **predictor**, `f`: **FQN**, `e`: **Emit**, `i`: **I18N**
 
 ### Dependencies
 | Name            | Framework | Description |
